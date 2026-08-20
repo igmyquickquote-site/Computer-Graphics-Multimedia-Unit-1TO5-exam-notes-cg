@@ -509,3 +509,214 @@ class TestPersistence:
         assert a == b
         assert a["unit_id"] == "cg-unit-5"
         assert len(a["topics"]) == 8
+
+
+# --- factual-correction verification (iteration 6): substring checks on full unit JSON ---
+import json as _json
+
+
+def _dump(unit):
+    return _json.dumps(unit, ensure_ascii=False)
+
+
+class TestUnit1Corrections:
+    def test_no_universal_half_rounds_up_rule(self, unit1):
+        d = _dump(unit1)
+        for bad in ["0.5 always rounds UP", "always rounds up", "always round up",
+                    ".5 always rounds"]:
+            assert bad.lower() not in d.lower(), bad
+
+    def test_dda_nearest_pixel_wording(self, unit1):
+        t = next(t for t in unit1["topics"] if t["id"] == "dda")
+        assert "round(x), round(y)" in t["memory_trick"]
+        assert "nearest pixel" in t["memory_trick"].lower()
+        note = t["solved_example"]["note"]
+        assert "nearest pixel" in note.lower()
+        assert "worked example" in note.lower()
+
+    def test_dda_pixels_unchanged(self, unit1):
+        t = next(t for t in unit1["topics"] if t["id"] == "dda")
+        rows = t["solved_example"]["table"]["rows"]
+        assert [r[-1] for r in rows] == [
+            "(2, 3)", "(3, 4)", "(4, 4)", "(5, 5)", "(6, 5)", "(7, 6)", "(8, 6)",
+        ]
+
+    def test_dda_lmr_and_cheat_hook_scoped(self, unit1):
+        fs = unit1["final_sections"]
+        lmr = next(i for i in fs["last_minute_revision"] if i["topic"] == "DDA")
+        assert "nearest pixel" in lmr["line"].lower()
+        hooks = " ".join(fs["cheat_card"]["hooks"])
+        assert "round(x), round(y)" in hooks
+
+    def test_cmy_theory_vs_practice(self, unit1):
+        t = next(t for t in unit1["topics"] if t["id"] == "cmy")
+        assert "In theory C+M+Y approaches black" in t["definition"] or \
+               "In theory C + M + Y approaches black" in t["definition"]
+        assert "SUBTRACTIVE" in t["definition"]
+        working = " ".join(t["working"])
+        assert "approaches black" in working
+        assert "deeper, more efficient black" in working
+        formulas = " ".join(t.get("formulas", []))
+        assert "C = 1 \u2212 R" in formulas or "C=1\u2212R" in formulas.replace(" ", "")
+
+    def test_rgb_cmy_table_all_mixed_row(self, unit1):
+        d = _dump(unit1)
+        assert "\u2248 Black (K ink in practice)" in d
+        rgb = next(t for t in unit1["topics"] if t["id"] == "rgb")
+        cmy = next(t for t in unit1["topics"] if t["id"] == "cmy")
+        assert "ADDITIVE" in rgb["definition"].upper()
+        assert "SUBTRACTIVE" in cmy["definition"].upper()
+
+    def test_hsi_absent_and_hsv_expanded(self, unit1):
+        d = _dump(unit1)
+        assert "HSI" not in d
+        t = next(t for t in unit1["topics"] if t["id"] == "hsv")
+        assert "Hue" in _dump(t) and "Saturation" in _dump(t) and "Value" in _dump(t)
+
+
+class TestUnit2Corrections:
+    def test_composite_column_vector_right_to_left(self, unit2):
+        t = next(t for t in unit2["topics"] if t["id"] == "homogeneous")
+        working = " ".join(t["working"])
+        assert "column vectors" in working
+        assert "RIGHT to LEFT" in working
+        assert "column vectors" in t["memory_trick"]
+        fs = unit2["final_sections"]
+        lmr = next(i for i in fs["last_minute_revision"] if i["topic"] == "Homogeneous")
+        assert "column vectors" in lmr["line"]
+        hooks = " ".join(fs["cheat_card"]["hooks"])
+        assert "column vectors" in hooks
+        mm = next(i for i in fs["must_memorize"]
+                  if "Composite" in i["term"])
+        assert "column vectors" in mm["definition"]
+        assert "right to left" in mm["definition"].lower()
+
+    def test_cohen_sutherland_accept_reject(self, unit2):
+        t = next(t for t in unit2["topics"] if t["id"] == "clipping")
+        working = " ".join(t["working"])
+        assert "OR = 0000" in working and "ACCEPT" in working.upper()
+        assert "AND \u2260 0000" in working and "REJECT" in working.upper()
+
+    def test_bresenham_table_unchanged(self, unit2):
+        t = next(t for t in unit2["topics"] if t["id"] == "bresenham")
+        rows = t["solved_example"]["table"]["rows"]
+        assert len(rows) == 7 and rows[-1][-1] == "(8, 6)"
+
+
+class TestUnit3Corrections:
+    def test_no_old_backface_convention(self, unit3):
+        d = _dump(unit3)
+        for bad in ["N\u00b7V \u2265", "N\u00b7V >=", "N \u00b7 V \u2265", "removes ~half the faces",
+                    "half the faces"]:
+            assert bad not in d, bad
+
+    def test_backface_new_convention(self, unit3):
+        t = next(t for t in unit3["topics"] if t["id"] == "hidden-surface")
+        working = " ".join(t["working"])
+        assert "TOWARDS the viewer" in working
+        assert "N\u00b7V < 0" in working
+        assert "sign reverses" in working
+        assert "eliminate many faces" in " ".join(t["quick_facts"])
+        assert "half the faces" not in _dump(t)
+
+    def test_backface_consistent_across_sections(self, unit3):
+        t = next(t for t in unit3["topics"] if t["id"] == "hidden-surface")
+        formulas = " ".join(t.get("formulas", []))
+        assert "N \u00b7 V < 0" in formulas or "N\u00b7V < 0" in formulas
+        fs = unit3["final_sections"]
+        cc = " ".join(fs["cheat_card"]["formulas"] + fs["cheat_card"]["hooks"])
+        assert "N\u00b7V < 0" in cc
+        lmr = next(i for i in fs["last_minute_revision"] if "Hidden" in i["topic"])
+        assert "N\u00b7V < 0" in lmr["line"]
+        mm = next(i for i in fs["must_memorize"] if "Back-face" in i["term"])
+        assert "N\u00b7V < 0" in mm["definition"]
+        assert "towards the viewer" in mm["definition"].lower()
+
+    def test_zbuffer_and_painter_kept(self, unit3):
+        t = next(t for t in unit3["topics"] if t["id"] == "hidden-surface")
+        working = " ".join(t["working"]).lower()
+        assert "closer" in working and "smaller z" in working
+        assert "farthest to nearest" in working
+        assert "closer surface" in t["diagram_caption"].lower()
+
+    def test_bezier_math_unchanged(self, unit3):
+        t = next(t for t in unit3["topics"] if t["id"] == "bezier")
+        rows = t["solved_example"]["table"]["rows"]
+        assert [r[-1] for r in rows] == ["4", "3"]
+
+
+class TestUnit4Corrections:
+    def test_pal_ntsc_approx(self, unit4):
+        d = _dump(unit4)
+        assert "PAL \u2248 25 fps" in d and "NTSC \u2248 30 fps" in d
+        t = next(t for t in unit4["topics"] if t["id"] == "digital-video")
+        assert "PAL \u2248 25 fps" in " ".join(t["working"])
+        fs = unit4["final_sections"]
+        lmr = next(i for i in fs["last_minute_revision"] if i["topic"] == "Video")
+        assert "PAL \u2248 25" in lmr["line"] and "NTSC \u2248 30" in lmr["line"]
+        mm = next(i for i in fs["must_memorize"] if "Frame Rate" in i["term"])
+        assert "PAL \u2248 25 fps" in mm["definition"]
+        cc = " ".join(fs["cheat_card"]["formulas"] + fs["cheat_card"]["hooks"])
+        assert "PAL \u2248 25 fps" in cc
+
+    def test_compression_ratios_qualitative(self, unit4):
+        d = _dump(unit4)
+        for bad in ["2\u20134\u00d7", "10\u2013100\u00d7", "2-4x", "10-100x"]:
+            assert bad not in d, bad
+        c = next(t for t in unit4["topics"] if t["id"] == "compression")["comparison"]
+        row = next(r for r in c["rows"] if "Compression" in r[0])
+        assert row[1] == "Usually smaller ratios"
+        assert "Much higher" in row[2]
+
+    def test_rle_and_ratio_formula_unchanged(self, unit4):
+        t = next(t for t in unit4["topics"] if t["id"] == "compression")
+        rows = t["solved_example"]["table"]["rows"]
+        assert [r[1] for r in rows] == ["4A", "3B", "2C", "1D"]
+        assert "1.25" in t["solved_example"]["note"]
+
+
+class TestUnit5Corrections:
+    def test_no_only_lossy_step_claim(self, unit5):
+        d = _dump(unit5).lower()
+        for bad in ["only lossy step", "the only lossy"]:
+            assert bad not in d, bad
+
+    def test_jpeg_main_lossy_step(self, unit5):
+        t = next(t for t in unit5["topics"] if t["id"] == "jpeg")
+        assert "MAIN lossy step" in " ".join(t["working"])
+        assert "chroma subsampling" in " ".join(t["quick_facts"]).lower()
+        assert "chroma subsampling" in t["exam_tip"].lower()
+        assert "Main information loss \u2192 QUANTIZATION" in t["exam_tip"]
+        assert "Quantize" in t["memory_trick"]
+        hooks = " ".join(unit5["final_sections"]["cheat_card"]["hooks"])
+        assert "MAIN lossy step" in hooks
+
+    def test_jpeg_diagram_caption(self, unit5):
+        t = next(t for t in unit5["topics"] if t["id"] == "jpeg")
+        assert t["diagram_caption"]
+        assert "only lossy" not in t["diagram_caption"].lower()
+
+    def test_mpeg_frame_descriptions(self, unit5):
+        t = next(t for t in unit5["topics"] if t["id"] == "mpeg")
+        working = " ".join(t["working"])
+        assert "previous I/P reference frame" in working
+        assert "residual changes" in working
+        assert "previous AND next reference frames" in working
+        assert "usually the smallest" in working
+        row = next(r for r in t["comparison"]["rows"] if r[0] == "Size")
+        assert row[-1] == "Usually smallest"
+
+    def test_mpeg4_container_distinction(self, unit5):
+        t = next(t for t in unit5["topics"] if t["id"] == "mpeg")
+        qf = " ".join(t["quick_facts"])
+        assert "container format" in qf
+        assert "MPEG-4 \u2192 MP4" not in _dump(unit5)
+        lmr = next(i for i in unit5["final_sections"]["last_minute_revision"]
+                   if i["topic"] == "MPEG")
+        assert "container" in lmr["line"]
+
+    def test_cd_dvd_numbers_unchanged(self, unit5):
+        d = _dump(unit5)
+        assert "700 MB" in d and "4.7 GB" in d
+        t = next(t for t in unit5["topics"] if t["id"] == "cd-dvd")
+        assert "208 songs" in t["solved_example"]["table"]["rows"][-1][-1]

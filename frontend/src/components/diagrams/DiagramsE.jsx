@@ -87,7 +87,7 @@ export const VideoFramesDiagram = () => (
         <T x={148 + i * 122} y={78} size={9} anchor="end" fill="#52525b" bold>frame {i + 1}</T>
       </g>
     ))}
-    <T x={300} y={175} size={11.5} bold>Still frames shown fast (PAL 25 fps · NTSC 30 fps) → eye sees motion</T>
+    <T x={300} y={175} size={11.5} bold>Still frames shown fast (PAL ≈ 25 fps · NTSC ≈ 30 fps) → eye sees motion</T>
   </svg>
 );
 
@@ -123,11 +123,11 @@ export const CompressionTreeDiagram = () => (
     <rect x="45" y="136" width="200" height="56" rx="5" fill="#fafafa" stroke="#71717a" />
     <T x={145} y={156} size={11} bold>RLE · Huffman</T>
     <T x={145} y={172} size={10} fill="#52525b">PNG, GIF, ZIP</T>
-    <T x={145} y={186} size={10} fill="#52525b">exact recovery, 2–4×</T>
+    <T x={145} y={186} size={10} fill="#52525b">exact recovery, smaller ratios</T>
     <rect x="320" y="136" width="200" height="56" rx="5" fill="#fafafa" stroke="#71717a" />
     <T x={420} y={156} size={11} bold>JPEG · MP3 · MPEG</T>
     <T x={420} y={172} size={10} fill="#52525b">photos, audio, video</T>
-    <T x={420} y={186} size={10} fill="#52525b">detail discarded, 10–100×</T>
+    <T x={420} y={186} size={10} fill="#52525b">detail discarded, much higher ratios</T>
     <T x={280} y={222} size={11.5} bold>Text/programs need LOSSLESS · media can afford LOSSY</T>
   </svg>
 );

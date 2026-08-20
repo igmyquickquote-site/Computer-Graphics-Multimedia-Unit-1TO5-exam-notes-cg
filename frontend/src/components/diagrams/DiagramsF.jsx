@@ -22,12 +22,12 @@ export const JPEGPipelineDiagram = () => (
     <Box x={8} y={40} w={100} h={56} title="RGB →" sub="YCbCr" />
     <Box x={128} y={40} w={95} h={56} title="8×8" sub="blocks" />
     <Box x={243} y={40} w={85} h={56} title="DCT" sub="frequencies" />
-    <Box x={348} y={40} w={125} h={56} title="Quantization" sub="LOSSY step!" dark />
+    <Box x={348} y={40} w={125} h={56} title="Quantization" sub="main lossy step" dark />
     <Box x={493} y={40} w={140} h={56} title="Zig-zag +" sub="RLE + Huffman" />
     {[108, 223, 328, 473].map((x) => (
       <line key={x} x1={x} y1="68" x2={x + 16} y2="68" stroke="#27272a" strokeWidth="1.5" markerEnd="url(#ajp)" />
     ))}
-    <T x={320} y={128} size={11} bold>Only the dark box loses data — everything else is reversible</T>
+    <T x={320} y={128} size={11} bold>Quantization = MAIN lossy step (chroma subsampling may also drop colour detail)</T>
   </svg>
 );
 
@@ -50,7 +50,7 @@ export const MPEGFramesDiagram = () => (
     <path d="M305,146 Q237,186 205,146" fill="none" stroke="#71717a" strokeWidth="1.4" markerEnd="url(#amp)" />
     <path d="M62,146 Q130,192 198,148" fill="none" stroke="#71717a" strokeWidth="1.4" markerEnd="url(#amp)" />
     <T x={185} y={200} size={9.5} bold fill="#52525b">B uses BOTH neighbours</T>
-    <T x={470} y={185} size={10.5} bold>Sizes: I largest · P medium · B smallest</T>
+    <T x={470} y={185} size={10.5} bold>Sizes: I largest · P medium · B usually smallest</T>
   </svg>
 );
 
