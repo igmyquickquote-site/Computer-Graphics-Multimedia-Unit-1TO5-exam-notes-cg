@@ -21,8 +21,10 @@ Web app rendering "Computer Graphics — Unit 1: Quick & Easy Exam Revision Note
 
 - 2026-06 (Unit 4): Unit 4 Multimedia Basics added (`content_unit4.py`, 8 topics: Intro to multimedia, Components T-I-A-V-A, Text & images (bitmap vs vector), Digital audio & MIDI, Digital video, Animation, Compression, Applications & authoring tools) with 4 solved numericals (image 1.44 MB, audio 1.76 MB, video 230 MB, RLE 10→8), 3 comparison tables and 6 new SVGs (DiagramsE.jsx: mm-components, bitmap-vector, audio-sampling, video-frames, keyframe-tween, compression-tree) + own cheat card. Tested (iteration_4: backend 37/37, frontend 100%).
 
+- 2026-06 (Unit 5 — syllabus complete): Unit 5 added (`content_unit5.py`, 8 topics: JPEG pipeline, MPEG I/P/B frames, Huffman coding w/ solved tree (avg 1.9 bits), CD-ROM/DVD w/ solved 208-songs, Streaming/VoD w/ solved 15-min download, VR & AR, Project development stages, File formats summary) with 3 comparison tables (I/P/B, CD vs DVD, VR vs AR) and 6 new SVGs (DiagramsF.jsx: jpeg-pipeline, mpeg-frames, huffman-tree, cd-dvd, streaming, vr-setup) + own cheat card. All 5 units now live. Tested (iteration_5: backend 49/49, frontend 100%).
+
 ## Backlog / Remaining
-- P1: Unit 5 content (same pattern: add content_unit5.py + seed; update TestUnitsList count in backend_test.py).
+- P2: Quick quiz per unit, combined all-units print, question predictions section.
 - P2: Restore full "long version" toggle (compact vs detailed view) — long content retrievable from git history.
 - P2: Search/keyword filter, mark-as-mastered checkboxes, question predictions section.
 

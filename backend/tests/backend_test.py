@@ -27,6 +27,10 @@ UNIT4_TOPIC_IDS = [
     "intro-multimedia", "mm-components", "text-images", "digital-audio",
     "digital-video", "animation", "compression", "mm-applications",
 ]
+UNIT5_TOPIC_IDS = [
+    "jpeg", "mpeg", "huffman", "cd-dvd", "streaming", "vr-ar",
+    "mm-project", "file-formats",
+]
 
 
 @pytest.fixture(scope="session")
@@ -64,6 +68,13 @@ def unit4(api):
     return r.json()
 
 
+@pytest.fixture(scope="session")
+def unit5(api):
+    r = api.get(f"{BASE_URL}/api/units/cg-unit-5", timeout=30)
+    assert r.status_code == 200, r.text[:300]
+    return r.json()
+
+
 # --- health / root ---
 class TestHealth:
     def test_root(self, api):
@@ -78,9 +89,11 @@ class TestUnitsList:
         r = api.get(f"{BASE_URL}/api/units", timeout=30)
         assert r.status_code == 200
         data = r.json()
-        assert isinstance(data, list) and len(data) == 4
-        assert [u["unit_id"] for u in data] == ["cg-unit-1", "cg-unit-2", "cg-unit-3", "cg-unit-4"]
-        assert [u["unit_number"] for u in data] == [1, 2, 3, 4]
+        assert isinstance(data, list) and len(data) == 5
+        assert [u["unit_id"] for u in data] == [
+            "cg-unit-1", "cg-unit-2", "cg-unit-3", "cg-unit-4", "cg-unit-5",
+        ]
+        assert [u["unit_number"] for u in data] == [1, 2, 3, 4, 5]
         for u in data:
             assert "_id" not in u
             for k in ("title", "subtitle", "subject"):
@@ -366,6 +379,117 @@ class TestUnit4:
                 assert t.get("diagram_caption") is None
 
 
+# --- Unit 5 structure (JPEG/MPEG/Huffman/CD-DVD/Streaming/VR-AR, new feature) ---
+class TestUnit5:
+    def test_meta_and_topic_ids(self, unit5):
+        assert unit5["unit_id"] == "cg-unit-5"
+        assert unit5["unit_number"] == 5
+        assert unit5["title"] == "CG Unit 5 — Rapid Revision"
+        assert unit5["subject"] == "Computer Graphics & Multimedia"
+        assert unit5.get("subtitle")
+        assert "_id" not in unit5
+        assert [t["id"] for t in unit5["topics"]] == UNIT5_TOPIC_IDS
+        assert len(unit5["topics"]) == 8
+        assert [t["number"] for t in unit5["topics"]] == list(range(1, 9))
+
+    def test_topic_schema_compact(self, unit5):
+        for t in unit5["topics"]:
+            for k in ("analogy", "definition", "working", "quick_facts", "memory_trick"):
+                assert t.get(k), f"{t['id']} missing {k}"
+            assert isinstance(t["working"], list) and t["working"]
+            assert isinstance(t["quick_facts"], list) and t["quick_facts"]
+            assert "key_points" not in t
+            assert isinstance(t.get("number"), int)
+            assert t.get("title")
+
+    def test_solved_examples_only_on_three_topics(self, unit5):
+        got = [t["id"] for t in unit5["topics"] if t.get("solved_example")]
+        assert got == ["huffman", "cd-dvd", "streaming"]
+
+    def test_huffman_solved_example(self, unit5):
+        t = next(t for t in unit5["topics"] if t["id"] == "huffman")
+        se = t["solved_example"]
+        table = se["table"]
+        assert table["headers"] == ["Symbol", "Probability", "Code", "Bits"]
+        codes = {r[0]: r[2] for r in table["rows"]}
+        assert codes == {"A": "0", "B": "10", "C": "110", "D": "111"}
+        assert [r[3] for r in table["rows"]] == ["1", "2", "3", "3"]
+        assert "1.9 bits" in se["note"]
+
+    def test_cd_dvd_solved_example(self, unit5):
+        t = next(t for t in unit5["topics"] if t["id"] == "cd-dvd")
+        rows = t["solved_example"]["table"]["rows"]
+        assert rows[0][-1] == "2,68,80,000 bits"
+        assert "3.36 MB" in rows[1][-1]
+        assert "208 songs" in rows[-1][-1]
+
+    def test_streaming_solved_example(self, unit5):
+        t = next(t for t in unit5["topics"] if t["id"] == "streaming")
+        rows = t["solved_example"]["table"]["rows"]
+        assert rows[0][-1] == "920 s"
+        assert "15.3 min" in rows[1][-1]
+
+    def test_solved_example_row_widths(self, unit5):
+        for t in unit5["topics"]:
+            se = t.get("solved_example")
+            if not se:
+                continue
+            assert se.get("title") and se.get("given") and se.get("note")
+            headers = se["table"]["headers"]
+            for row in se["table"]["rows"]:
+                assert len(row) == len(headers), t["id"]
+
+    def test_comparison_tables(self, unit5):
+        with_cmp = [t["id"] for t in unit5["topics"] if t.get("comparison")]
+        assert with_cmp == ["mpeg", "cd-dvd", "vr-ar"]
+        expected = {
+            "mpeg": ("I vs P vs B", ["Point", "I-frame", "P-frame", "B-frame"]),
+            "cd-dvd": ("CD vs DVD", ["Point", "CD", "DVD"]),
+            "vr-ar": ("VR vs AR", ["Point", "VR", "AR"]),
+        }
+        for tid, (title_part, headers) in expected.items():
+            c = next(t for t in unit5["topics"] if t["id"] == tid)["comparison"]
+            assert title_part in c["title"]
+            assert c["headers"] == headers
+            assert len(c["rows"]) >= 3
+            for row in c["rows"]:
+                assert len(row) == len(headers), tid
+
+    def test_final_sections(self, unit5):
+        fs = unit5["final_sections"]
+        assert set(fs.keys()) == {"cheat_card", "last_minute_revision", "must_memorize"}
+        cc = fs["cheat_card"]
+        assert cc["read_time"]
+        assert len(cc["formulas"]) == 6
+        assert len(cc["hooks"]) == 7
+        assert len(fs["last_minute_revision"]) == 8
+        assert len(fs["must_memorize"]) == 11
+        for item in fs["last_minute_revision"]:
+            assert item["topic"] and item["line"]
+        for item in fs["must_memorize"]:
+            assert item["term"] and item["definition"]
+
+    def test_diagram_keys(self, unit5):
+        keys = {t["id"]: t.get("diagram_key") for t in unit5["topics"]}
+        assert keys == {
+            "jpeg": "jpeg-pipeline",
+            "mpeg": "mpeg-frames",
+            "huffman": "huffman-tree",
+            "cd-dvd": "cd-dvd",
+            "streaming": "streaming",
+            "vr-ar": "vr-setup",
+            "mm-project": None,
+            "file-formats": None,
+        }
+
+    def test_diagram_captions_match_keys(self, unit5):
+        for t in unit5["topics"]:
+            if t.get("diagram_key"):
+                assert t.get("diagram_caption")
+            else:
+                assert t.get("diagram_caption") is None
+
+
 # --- idempotent seeding / persistence ---
 class TestPersistence:
     def test_repeat_fetch_stable(self, api):
@@ -378,3 +502,10 @@ class TestPersistence:
         b = api.get(f"{BASE_URL}/api/units/cg-unit-4", timeout=30).json()
         assert a == b
         assert a["unit_id"] == "cg-unit-4"
+
+    def test_unit5_repeat_fetch_stable(self, api):
+        a = api.get(f"{BASE_URL}/api/units/cg-unit-5", timeout=30).json()
+        b = api.get(f"{BASE_URL}/api/units/cg-unit-5", timeout=30).json()
+        assert a == b
+        assert a["unit_id"] == "cg-unit-5"
+        assert len(a["topics"]) == 8

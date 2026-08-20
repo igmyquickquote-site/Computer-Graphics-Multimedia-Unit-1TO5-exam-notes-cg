@@ -3,6 +3,7 @@ import { RGBDiagram, CMYDiagram, HSVDiagram, DDAGridDiagram } from "./DiagramsB"
 import { CircleOctantsDiagram, ScanlineFillDiagram, Transforms2DDiagram, ReflectShearDiagram, WindowViewportDiagram, RegionCodesDiagram } from "./DiagramsC";
 import { Axes3DDiagram, ProjectionTreeDiagram, ParallelVsPerspectiveDiagram, ZBufferDiagram, BezierDiagram } from "./DiagramsD";
 import { MMComponentsDiagram, BitmapVectorDiagram, AudioSamplingDiagram, VideoFramesDiagram, KeyframeTweenDiagram, CompressionTreeDiagram } from "./DiagramsE";
+import { JPEGPipelineDiagram, MPEGFramesDiagram, HuffmanTreeDiagram, CDDVDDiagram, StreamingDiagram, VRSetupDiagram } from "./DiagramsF";
 
 export const DIAGRAMS = {
   "intro-flow": IntroFlowDiagram,
@@ -32,4 +33,10 @@ export const DIAGRAMS = {
   "video-frames": VideoFramesDiagram,
   "keyframe-tween": KeyframeTweenDiagram,
   "compression-tree": CompressionTreeDiagram,
+  "jpeg-pipeline": JPEGPipelineDiagram,
+  "mpeg-frames": MPEGFramesDiagram,
+  "huffman-tree": HuffmanTreeDiagram,
+  "cd-dvd": CDDVDDiagram,
+  streaming: StreamingDiagram,
+  "vr-setup": VRSetupDiagram,
 };
