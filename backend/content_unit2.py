@@ -229,6 +229,13 @@ UNIT_2 = {
         },
     ],
     "final_sections": {
+        "predicted_questions": [
+            {"question": "Explain Bresenham's line algorithm and compare it with DDA.", "marks": "10", "topic_id": "bresenham", "reason": "Algorithm + star comparison table in one answer"},
+            {"question": "Explain the midpoint circle algorithm with the r = 5 example.", "marks": "10", "topic_id": "midpoint-circle", "reason": "Standard algorithm + a small ready-made numerical"},
+            {"question": "Write the 2D transformation equations for translation, rotation and scaling.", "marks": "10", "topic_id": "transforms", "reason": "The core equations of this unit"},
+            {"question": "What are homogeneous coordinates? Why are they needed?", "marks": "5", "topic_id": "homogeneous", "reason": "Favourite 'why' question — one-line answer scores fast"},
+            {"question": "Explain Cohen-Sutherland line clipping using region codes.", "marks": "10", "topic_id": "clipping", "reason": "The region-code grid diagram earns quick marks"},
+        ],
         "cheat_card": {
             "read_time": "2-minute read",
             "formulas": [

@@ -275,6 +275,13 @@ UNIT_1 = {
         },
     ],
     "final_sections": {
+        "predicted_questions": [
+            {"question": "Explain the working of a CRT with a neat labelled diagram.", "marks": "10", "topic_id": "crt", "reason": "Most-repeated diagram question of this unit"},
+            {"question": "Differentiate between Raster Scan and Random Scan displays.", "marks": "5", "topic_id": "random-scan", "reason": "The star comparison table — near-guaranteed"},
+            {"question": "Explain RGB and CMY colour models. How are they related?", "marks": "10", "topic_id": "cmy", "reason": "Additive vs subtractive + the C = 1−R conversions"},
+            {"question": "Describe the HSV colour model with a diagram.", "marks": "5", "topic_id": "hsv", "reason": "Hexcone + H/S/V ranges are favourite short questions"},
+            {"question": "Explain the DDA algorithm and rasterize the line (2,3) → (8,6).", "marks": "10", "topic_id": "dda", "reason": "The classic numerical — your table is ready in the notes"},
+        ],
         "last_minute_revision": [
             {"topic": "Computer Graphics", "line": "Making pictures by computer. Pixel = smallest dot. Frame buffer = pixel memory. Apps: CAD, games, GUI, medical."},
             {"topic": "Display Devices", "line": "CRT-based (raster, random, DVST) vs Flat panel (Emissive: LED/Plasma · Non-emissive: LCD)."},

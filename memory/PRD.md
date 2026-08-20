@@ -24,8 +24,10 @@ Web app rendering "Computer Graphics — Unit 1: Quick & Easy Exam Revision Note
 - 2026-06 (Unit 5 — syllabus complete): Unit 5 added (`content_unit5.py`, 8 topics: JPEG, MPEG I/P/B, Huffman solved tree, CD-ROM/DVD, Streaming/VoD, VR & AR, Project stages, File formats) with 3 comparison tables and 6 SVGs (DiagramsF.jsx) + own cheat card. All 5 units live. Tested (iteration_5: backend 49/49, frontend 100%).
 - 2026-06 (Factual corrections pass): User-requested targeted corrections applied across all 5 units without redesign: DDA nearest-pixel rounding (no universal ".5 rounds up"), CMY "in theory approaches black, K for practical black", zero "HSI" mentions in Unit 1, Unit 2 composite order tied to column vectors + Cohen-Sutherland OR=0000 accept / AND≠0000 reject, Unit 3 back-face redefined with V = surface→viewer ⇒ N·V < 0 hidden (consistent in topic/cheat/LMR/definitions) + "eliminates many faces" wording, Unit 4 PAL ≈ 25 / NTSC ≈ 30 fps + qualitative compression ratios, Unit 5 quantization = MAIN lossy step (chroma subsampling noted), MPEG P/B via reference frames + residuals, MP4 = container for MPEG-4. Diagram labels updated in DiagramsE/F. Verified (iteration_6: backend 73/73, frontend 100%, no regressions).
 
+- 2026-06 (Question Predictions): "Top 5 Predicted Questions" card added per unit — final_sections.predicted_questions (question, marks 5/10, reason, topic_id) rendered at top after cover, with Revise→ jump links to topics, sidebar/mobile-menu entries and scroll-spy. Verified (iteration_7: backend 89/89, frontend 100%).
+
 ## Backlog / Remaining
-- P2: Quick quiz per unit, combined all-units print, question predictions section.
+- P2: Quick quiz per unit, combined all-units print, mark-as-mastered progress tracker.
 - P2: Restore full "long version" toggle (compact vs detailed view) — long content retrievable from git history.
 - P2: Search/keyword filter, mark-as-mastered checkboxes, question predictions section.
 

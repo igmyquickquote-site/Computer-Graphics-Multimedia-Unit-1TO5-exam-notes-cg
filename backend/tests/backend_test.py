@@ -124,7 +124,7 @@ class TestUnit2:
 
     def test_final_sections(self, unit2):
         fs = unit2["final_sections"]
-        assert set(fs.keys()) == {"cheat_card", "last_minute_revision", "must_memorize"}
+        assert set(fs.keys()) == {"predicted_questions", "cheat_card", "last_minute_revision", "must_memorize"}
         cc = fs["cheat_card"]
         assert cc["read_time"]
         assert isinstance(cc["formulas"], list) and len(cc["formulas"]) >= 6
@@ -161,7 +161,7 @@ class TestUnit1:
 
     def test_cheat_card(self, unit1):
         fs = unit1["final_sections"]
-        assert set(fs.keys()) == {"cheat_card", "last_minute_revision", "must_memorize"}
+        assert set(fs.keys()) == {"predicted_questions", "cheat_card", "last_minute_revision", "must_memorize"}
         cc = fs["cheat_card"]
         assert len(cc["formulas"]) == 6
         assert len(cc["hooks"]) == 6
@@ -227,7 +227,7 @@ class TestUnit3:
 
     def test_final_sections(self, unit3):
         fs = unit3["final_sections"]
-        assert set(fs.keys()) == {"cheat_card", "last_minute_revision", "must_memorize"}
+        assert set(fs.keys()) == {"predicted_questions", "cheat_card", "last_minute_revision", "must_memorize"}
         cc = fs["cheat_card"]
         assert cc["read_time"]
         assert len(cc["formulas"]) == 7
@@ -346,7 +346,7 @@ class TestUnit4:
 
     def test_final_sections(self, unit4):
         fs = unit4["final_sections"]
-        assert set(fs.keys()) == {"cheat_card", "last_minute_revision", "must_memorize"}
+        assert set(fs.keys()) == {"predicted_questions", "cheat_card", "last_minute_revision", "must_memorize"}
         cc = fs["cheat_card"]
         assert cc["read_time"]
         assert len(cc["formulas"]) == 7
@@ -457,7 +457,7 @@ class TestUnit5:
 
     def test_final_sections(self, unit5):
         fs = unit5["final_sections"]
-        assert set(fs.keys()) == {"cheat_card", "last_minute_revision", "must_memorize"}
+        assert set(fs.keys()) == {"predicted_questions", "cheat_card", "last_minute_revision", "must_memorize"}
         cc = fs["cheat_card"]
         assert cc["read_time"]
         assert len(cc["formulas"]) == 6
@@ -720,3 +720,40 @@ class TestUnit5Corrections:
         assert "700 MB" in d and "4.7 GB" in d
         t = next(t for t in unit5["topics"] if t["id"] == "cd-dvd")
         assert "208 songs" in t["solved_example"]["table"]["rows"][-1][-1]
+
+
+# ---------------------------------------------------------------- #
+# Feature: Top 5 Predicted Questions (final_sections.predicted_questions)
+# ---------------------------------------------------------------- #
+class TestPredictedQuestions:
+    @pytest.mark.parametrize("uid", [f"cg-unit-{n}" for n in range(1, 6)])
+    def test_predicted_questions_structure(self, api, uid):
+        r = api.get(f"{BASE_URL}/api/units/{uid}")
+        assert r.status_code == 200, r.text[:300]
+        unit = r.json()
+        pqs = unit["final_sections"].get("predicted_questions")
+        assert pqs is not None, f"{uid} missing predicted_questions"
+        assert isinstance(pqs, list) and len(pqs) == 5, f"{uid} has {len(pqs) if pqs else 0} items"
+        topic_ids = {t["id"] for t in unit["topics"]}
+        for i, q in enumerate(pqs):
+            assert set(["question", "marks", "topic_id", "reason"]).issubset(q.keys()), f"{uid}#{i} keys {q.keys()}"
+            assert isinstance(q["question"], str) and q["question"].strip(), f"{uid}#{i} empty question"
+            assert isinstance(q["reason"], str) and q["reason"].strip(), f"{uid}#{i} empty reason"
+            assert q["marks"] in ("5", "10"), f"{uid}#{i} marks={q['marks']}"
+            assert q["topic_id"] in topic_ids, f"{uid}#{i} bad topic_id {q['topic_id']}"
+
+    @pytest.mark.parametrize("uid", [f"cg-unit-{n}" for n in range(1, 6)])
+    def test_predicted_questions_is_first_final_section(self, api, uid):
+        r = api.get(f"{BASE_URL}/api/units/{uid}")
+        keys = list(r.json()["final_sections"].keys())
+        assert keys[0] == "predicted_questions", f"{uid} final_sections order {keys}"
+
+    def test_unit1_and_unit5_first_question_content(self, api):
+        u1 = api.get(f"{BASE_URL}/api/units/cg-unit-1").json()
+        u5 = api.get(f"{BASE_URL}/api/units/cg-unit-5").json()
+        assert "CRT" in u1["final_sections"]["predicted_questions"][0]["question"]
+        assert "JPEG" in u5["final_sections"]["predicted_questions"][0]["question"]
+
+    @pytest.mark.parametrize("uid", [f"cg-unit-{n}" for n in range(1, 6)])
+    def test_no_mongo_id_leak(self, api, uid):
+        assert "_id" not in api.get(f"{BASE_URL}/api/units/{uid}").json()

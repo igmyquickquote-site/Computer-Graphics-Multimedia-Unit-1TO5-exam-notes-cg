@@ -4,10 +4,10 @@ import axios from "axios";
 import { Printer, GraduationCap, Loader2, Menu, X } from "lucide-react";
 import { Sidebar } from "@/components/Sidebar";
 import { TopicCard } from "@/components/TopicCard";
-import { LastMinuteRevision, MustMemorize, CheatCard } from "@/components/FinalSections";
+import { LastMinuteRevision, MustMemorize, CheatCard, PredictedQuestions } from "@/components/FinalSections";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-const SECTION_IDS = ["cheat-card", "last-minute", "definitions"];
+const SECTION_IDS = ["predictions", "cheat-card", "last-minute", "definitions"];
 
 function App() {
   const [unit, setUnit] = useState(null);
@@ -108,6 +108,7 @@ function App() {
         {menuOpen && (
           <div className="lg:hidden border-t border-zinc-200 bg-white max-h-[60vh] overflow-y-auto px-4 py-3" data-testid="mobile-menu">
             {[...unit.topics.map((t) => ({ id: t.id, label: `${String(t.number).padStart(2, "0")}  ${t.title}` })),
+              { id: "predictions", label: "🎯 Top 5 Predicted Questions" },
               { id: "cheat-card", label: "🃏 Pocket Cheat Card" },
               { id: "last-minute", label: "⚡ Last-Minute Revision" },
               { id: "definitions", label: "🧠 Must-Memorize Definitions" }].map((item) => (
@@ -133,6 +134,10 @@ function App() {
               ))}
             </div>
           </section>
+
+          {fs.predicted_questions && (
+            <PredictedQuestions items={fs.predicted_questions} topics={unit.topics} onJump={navigate} />
+          )}
 
           {fs.cheat_card && <CheatCard data={fs.cheat_card} />}
 

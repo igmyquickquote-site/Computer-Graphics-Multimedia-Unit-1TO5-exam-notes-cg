@@ -1,0 +1,17 @@
+{
+  "summary": "Tested the new 'Top 5 Predicted Questions' feature end-to-end. Backend: extended /app/backend/tests/backend_test.py with a TestPredictedQuestions class (structure, exactly 5 items, non-empty question/reason, marks in {5,10}, topic_id referential integrity against unit topics, predicted_questions as first final_sections key, Unit1=CRT / Unit5=JPEG content, no _id leak) — all 5 units validated. Full suite now 89/89 passing (5 pre-existing assertions that pinned final_sections keys to an exact 3-key set were updated to include predicted_questions — stale test expectation, not an app bug). Frontend (Playwright, 1920x1080 + 390x844): predictions card renders after cover and before cheat card, 5 numbered rows (#1..#5) with question, reason, marks pill and Revise button; Revise jump verified on Unit 1 (dda -> top 96px) and Unit 5 (huffman -> 96px); sidebar 'Top 5 Predicted Questions' is first Final Sections entry, scrolls back and highlights via scroll-spy (bg-zinc-900 active class); mobile menu entry present and navigates correctly; unit switching updates content (Unit1 CRT, Unit5 JPEG) and Units 2/3/4 each render 5 Revise buttons. Zero console errors on any unit.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": ["/app/backend/tests/backend_test.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "FinalSections.jsx PredictedQuestions silently drops the 'Revise' button when topic_id does not match a topic; a dev-time warning/fallback would surface future content typos (currently all 25 topic_ids resolve correctly)."
+  ],
+  "updated_files": ["/app/backend/tests/backend_test.py"],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "seed_data_creation": "None — read-only content endpoints",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "backend_test.py now has 89 tests including TestPredictedQuestions (parametrized over cg-unit-1..5). final_sections key-set assertions expect exactly {predicted_questions, cheat_card, last_minute_revision, must_memorize} — update if new sections are added. Frontend testids: predictions-section, prediction-jump-{topic_id}, predictions-btn, mobile-menu / mobile-menu-btn, unit-tab-{unit_id}, topic-card-{id}. Navigation uses a 50ms deferred smooth scroll; wait ~1.5s before asserting positions.",
+  "rca_of_the_issue": "No defects found in the new feature. The only failures were 5 stale test assertions from iteration 6 that asserted an exact final_sections key set; updated in the test suite."
+}

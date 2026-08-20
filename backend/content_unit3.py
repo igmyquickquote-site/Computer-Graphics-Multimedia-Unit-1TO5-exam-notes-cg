@@ -259,6 +259,13 @@ UNIT_3 = {
         },
     ],
     "final_sections": {
+        "predicted_questions": [
+            {"question": "Differentiate between parallel and perspective projection.", "marks": "5", "topic_id": "perspective-projection", "reason": "Star table — add x' = x·d/z for extra credit"},
+            {"question": "Explain 3D rotation about the z-axis with an example.", "marks": "5", "topic_id": "3d-rotation", "reason": "The solved Rz 90° example fits exactly"},
+            {"question": "Explain the Z-buffer algorithm for hidden surface removal.", "marks": "10", "topic_id": "hidden-surface", "reason": "Most-asked visible-surface method"},
+            {"question": "Explain Bezier curves with properties and find B(0.5) for given control points.", "marks": "10", "topic_id": "bezier", "reason": "Formula + solved numerical are both ready"},
+            {"question": "Differentiate Bezier and B-spline curves.", "marks": "5", "topic_id": "bspline", "reason": "Local vs global control — the star table"},
+        ],
         "cheat_card": {
             "read_time": "2-minute read",
             "formulas": [

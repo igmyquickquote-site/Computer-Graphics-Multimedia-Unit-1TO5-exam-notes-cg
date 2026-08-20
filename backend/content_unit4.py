@@ -273,6 +273,13 @@ UNIT_4 = {
         },
     ],
     "final_sections": {
+        "predicted_questions": [
+            {"question": "What is multimedia? Explain its components.", "marks": "10", "topic_id": "mm-components", "reason": "The definition + T-I-A-V-A opener of the unit"},
+            {"question": "Differentiate bitmap and vector graphics.", "marks": "5", "topic_id": "text-images", "reason": "Star table + the zoom behaviour one-liner"},
+            {"question": "Explain sound digitization (sampling & quantization) and compare MIDI with digital audio.", "marks": "10", "topic_id": "digital-audio", "reason": "Two star items combined in one answer"},
+            {"question": "Differentiate lossless and lossy compression with examples.", "marks": "5", "topic_id": "compression", "reason": "Star table + the RLE example"},
+            {"question": "Explain multimedia authoring tools and their types.", "marks": "5", "topic_id": "mm-applications", "reason": "C-I-T types with one example each"},
+        ],
         "cheat_card": {
             "read_time": "2-minute read",
             "formulas": [

@@ -261,6 +261,13 @@ UNIT_5 = {
         },
     ],
     "final_sections": {
+        "predicted_questions": [
+            {"question": "Explain JPEG compression with a block diagram.", "marks": "10", "topic_id": "jpeg", "reason": "The pipeline diagram is a ready-made answer"},
+            {"question": "Explain MPEG video compression (I, P and B frames).", "marks": "10", "topic_id": "mpeg", "reason": "GOP diagram + the I/P/B table"},
+            {"question": "Explain Huffman coding with an example.", "marks": "10", "topic_id": "huffman", "reason": "The solved tree (avg 1.9 bits) fits exactly"},
+            {"question": "Differentiate Virtual Reality and Augmented Reality.", "marks": "5", "topic_id": "vr-ar", "reason": "Star table + one device example each"},
+            {"question": "Explain the stages of multimedia project development.", "marks": "10", "topic_id": "mm-project", "reason": "P-D-P-T-D — five stages, one line each"},
+        ],
         "cheat_card": {
             "read_time": "2-minute read",
             "formulas": [

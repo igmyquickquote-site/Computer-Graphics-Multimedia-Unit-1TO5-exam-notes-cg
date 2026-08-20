@@ -1,4 +1,4 @@
-import { Zap, Brain } from "lucide-react";
+import { Zap, Brain, Target } from "lucide-react";
 
 const SectionHeader = ({ icon: Icon, title, sub }) => (
   <header className="border-b-2 border-zinc-900 pb-1.5 mb-4">
@@ -66,6 +66,45 @@ export const MustMemorize = ({ items }) => (
           <p className="text-[12.5px] leading-snug text-zinc-700">{d.definition}</p>
         </div>
       ))}
+    </div>
+  </section>
+);
+
+export const PredictedQuestions = ({ items, topics, onJump }) => (
+  <section id="predictions" data-testid="predictions-section" className="scroll-mt-24 avoid-break">
+    <div className="border-2 border-zinc-900 rounded-md overflow-hidden">
+      <div className="bg-zinc-900 text-white px-3 py-1.5 flex items-center justify-between print:bg-zinc-200 print:text-black">
+        <p className="font-mono text-[13px] font-bold flex items-center gap-2">
+          <Target className="w-4 h-4" /> TOP 5 PREDICTED QUESTIONS
+        </p>
+        <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-300 print:text-zinc-600">revise these first</span>
+      </div>
+      <div className="bg-white">
+        {items.map((q, i) => {
+          const topic = topics.find((t) => t.id === q.topic_id);
+          return (
+            <div key={i} className={`flex items-start gap-3 px-3 py-2 ${i > 0 ? "border-t border-zinc-200" : ""} ${i % 2 ? "bg-zinc-50" : ""}`}>
+              <span className="shrink-0 font-mono text-sm font-extrabold text-zinc-300 mt-0.5">#{i + 1}</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-[14px] font-semibold text-zinc-900 leading-snug">{q.question}</p>
+                <p className="text-[11.5px] text-zinc-500 leading-snug mt-0.5">{q.reason}</p>
+              </div>
+              <div className="shrink-0 flex items-center gap-2 mt-0.5">
+                <span className="font-mono text-[10px] font-bold border border-zinc-900 rounded-full px-2 py-0.5">{q.marks} marks</span>
+                {topic && (
+                  <button
+                    data-testid={`prediction-jump-${q.topic_id}`}
+                    onClick={() => onJump(q.topic_id)}
+                    className="no-print text-[11px] font-bold text-zinc-600 hover:text-zinc-900 underline underline-offset-2"
+                  >
+                    Revise →
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   </section>
 );
