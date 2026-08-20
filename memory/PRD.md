@@ -17,9 +17,10 @@ Web app rendering "Computer Graphics — Unit 1: Quick & Easy Exam Revision Note
 - 2026-06 (MVP): Full booklet — 10 topics × 7-step pattern, DDA solved example (2,3)→(8,6) verified, 4 final sections, sidebar scroll-spy, print button, mobile menu. Tested (iteration_1: backend 100%, frontend 95%; mobile over-scroll fixed via deferred scrollIntoView).
 - 2026-06 (Compaction, user request — 4-5 hrs before exam): Content condensed to "Rapid Revision" — shorter definitions/working, only 2 comparison tables (Raster vs Random ★, RGB vs CMY ★), removed answer-structure blocks, removed Diagram Gallery + 8 Answer Templates sections, must-memorize trimmed to 12, print CSS compacted → PDF ≈ 6 pages (was ~15).
 - 2026-06 (Cheat Card + Unit 2): Pocket Cheat Card (formulas + memory hooks, 2-min read) added to each unit's final_sections, rendered right after cover with sidebar/mobile-menu links. Unit 2 added (`content_unit2.py`, 8 topics: Bresenham line w/ solved (2,3)→(8,6) table, Midpoint circle w/ r=5 solved table, Polygon fill, 2D transforms, Reflection & Shear, Homogeneous/composite, Window-Viewport, Clipping) with 6 new hand-coded SVGs (DiagramsC.jsx) and a Unit 1/Unit 2 switcher in the header. Tested (iteration_2: backend 14/14, frontend 100%).
+- 2026-06 (Unit 3): Unit 3 added (`content_unit3.py`, 8 topics: 3D concepts, 3D translate/scale w/ solved (2,3,4)→(6,10,14), 3D rotation w/ solved Rz90°(1,2,3)→(−2,1,3), Parallel projection, Perspective w/ solved P(6,8,10),d=5→(3,4) + Parallel-vs-Perspective table, Hidden surface removal (back-face/Z-buffer/painter), Bezier w/ solved B(0.5)=(4,3), B-spline + comparison table) with 5 new SVGs (DiagramsD.jsx: axes-3d, projection-tree, parallel-vs-perspective, zbuffer, bezier) and its own cheat card. Tested (iteration_3: backend 24/24, frontend 100%).
 
 ## Backlog / Remaining
-- P1: Units 3–5 content (same pattern: add content_unitN.py + seed).
+- P1: Units 4–5 content (same pattern: add content_unitN.py + seed).
 - P2: Restore full "long version" toggle (compact vs detailed view) — long content retrievable from git history.
 - P2: Search/keyword filter, mark-as-mastered checkboxes, question predictions section.
 

@@ -19,6 +19,10 @@ UNIT1_TOPIC_IDS = [
     "intro-cg", "display-devices", "crt", "raster-scan", "random-scan",
     "rgb", "cmy", "hsv", "dda", "scan-conversion",
 ]
+UNIT3_TOPIC_IDS = [
+    "3d-concepts", "3d-translate-scale", "3d-rotation", "parallel-projection",
+    "perspective-projection", "hidden-surface", "bezier", "bspline",
+]
 
 
 @pytest.fixture(scope="session")
@@ -42,6 +46,13 @@ def unit2(api):
     return r.json()
 
 
+@pytest.fixture(scope="session")
+def unit3(api):
+    r = api.get(f"{BASE_URL}/api/units/cg-unit-3", timeout=30)
+    assert r.status_code == 200, r.text[:300]
+    return r.json()
+
+
 # --- health / root ---
 class TestHealth:
     def test_root(self, api):
@@ -56,9 +67,9 @@ class TestUnitsList:
         r = api.get(f"{BASE_URL}/api/units", timeout=30)
         assert r.status_code == 200
         data = r.json()
-        assert isinstance(data, list) and len(data) == 2
-        assert [u["unit_id"] for u in data] == ["cg-unit-1", "cg-unit-2"]
-        assert [u["unit_number"] for u in data] == [1, 2]
+        assert isinstance(data, list) and len(data) == 3
+        assert [u["unit_id"] for u in data] == ["cg-unit-1", "cg-unit-2", "cg-unit-3"]
+        assert [u["unit_number"] for u in data] == [1, 2, 3]
         for u in data:
             assert "_id" not in u
             for k in ("title", "subtitle", "subject"):
@@ -144,6 +155,88 @@ class TestUnit1:
         for t in unit1["topics"]:
             assert t.get("quick_facts")
             assert "key_points" not in t
+
+
+# --- Unit 3 structure (3D graphics, new feature) ---
+class TestUnit3:
+    def test_meta_and_topic_ids(self, unit3):
+        assert unit3["unit_number"] == 3
+        assert unit3["title"] == "CG Unit 3 — Rapid Revision"
+        assert "_id" not in unit3
+        assert [t["id"] for t in unit3["topics"]] == UNIT3_TOPIC_IDS
+        assert len(unit3["topics"]) == 8
+
+    def test_topic_schema_compact(self, unit3):
+        for t in unit3["topics"]:
+            for k in ("analogy", "definition", "working", "quick_facts", "memory_trick"):
+                assert t.get(k), f"{t['id']} missing {k}"
+            assert isinstance(t["working"], list) and t["working"]
+            assert isinstance(t["quick_facts"], list) and t["quick_facts"]
+            assert "key_points" not in t
+            assert isinstance(t.get("number"), int)
+            assert t.get("title")
+
+    def test_solved_examples_only_on_four_topics(self, unit3):
+        got = [t["id"] for t in unit3["topics"] if t.get("solved_example")]
+        assert got == ["3d-translate-scale", "3d-rotation", "perspective-projection", "bezier"]
+
+    def test_translate_scale_result(self, unit3):
+        t = next(t for t in unit3["topics"] if t["id"] == "3d-translate-scale")
+        rows = t["solved_example"]["table"]["rows"]
+        assert rows[-1][-1] == "(6, 10, 14)"
+
+    def test_rotation_result(self, unit3):
+        t = next(t for t in unit3["topics"] if t["id"] == "3d-rotation")
+        rows = t["solved_example"]["table"]["rows"]
+        assert [r[-1] for r in rows] == ["\u22122", "1", "3"]
+        assert "(\u22122, 1, 3)" in t["solved_example"]["note"]
+
+    def test_perspective_results(self, unit3):
+        t = next(t for t in unit3["topics"] if t["id"] == "perspective-projection")
+        rows = t["solved_example"]["table"]["rows"]
+        assert [r[-1] for r in rows] == ["3", "4"]
+
+    def test_bezier_results(self, unit3):
+        t = next(t for t in unit3["topics"] if t["id"] == "bezier")
+        rows = t["solved_example"]["table"]["rows"]
+        assert [r[-1] for r in rows] == ["4", "3"]
+
+    def test_final_sections(self, unit3):
+        fs = unit3["final_sections"]
+        assert set(fs.keys()) == {"cheat_card", "last_minute_revision", "must_memorize"}
+        cc = fs["cheat_card"]
+        assert cc["read_time"]
+        assert len(cc["formulas"]) == 7
+        assert len(cc["hooks"]) == 6
+        assert len(fs["last_minute_revision"]) == 8
+        assert len(fs["must_memorize"]) == 10
+
+    def test_comparison_tables(self, unit3):
+        persp = next(t for t in unit3["topics"] if t["id"] == "perspective-projection")
+        cmp1 = persp["comparison"]
+        assert "Parallel vs Perspective" in cmp1["title"]
+        assert len(cmp1["rows"]) == 5
+        assert cmp1["headers"] == ["Point", "Parallel", "Perspective"]
+
+        bs = next(t for t in unit3["topics"] if t["id"] == "bspline")
+        cmp2 = bs["comparison"]
+        assert "Bezier vs B-Spline" in cmp2["title"]
+        assert len(cmp2["rows"]) == 4
+        for row in cmp2["rows"]:
+            assert len(row) == len(cmp2["headers"])
+
+    def test_diagram_keys(self, unit3):
+        keys = {t["id"]: t.get("diagram_key") for t in unit3["topics"]}
+        assert keys == {
+            "3d-concepts": "axes-3d",
+            "3d-translate-scale": None,
+            "3d-rotation": None,
+            "parallel-projection": "projection-tree",
+            "perspective-projection": "parallel-vs-perspective",
+            "hidden-surface": "zbuffer",
+            "bezier": "bezier",
+            "bspline": None,
+        }
 
 
 # --- idempotent seeding / persistence ---

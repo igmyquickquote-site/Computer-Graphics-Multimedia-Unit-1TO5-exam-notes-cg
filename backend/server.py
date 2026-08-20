@@ -9,6 +9,7 @@ import logging
 
 from content_unit1 import UNIT_1
 from content_unit2 import UNIT_2
+from content_unit3 import UNIT_3
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -23,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    for u in (UNIT_1, UNIT_2):
+    for u in (UNIT_1, UNIT_2, UNIT_3):
         await db.units.replace_one({"unit_id": u["unit_id"]}, u, upsert=True)
     logger.info("Units seeded")
     yield
