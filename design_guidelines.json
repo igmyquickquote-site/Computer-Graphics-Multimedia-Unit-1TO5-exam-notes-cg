@@ -1,0 +1,160 @@
+{
+  "app_name": "CG Unit 1 - Exam Revision Booklet",
+  "archetype": "Swiss & High-Contrast Academic (Print-First & B&W Safe)",
+  "design_tone": "Academic, minimal, ultra-high contrast, print-optimized. Built for M.Sc CS Sem-IV students (MGSU Bikaner) needing rapid 10-minute revision before entering the exam hall.",
+  "typography": {
+    "fonts": {
+      "heading_font": "Outfit, General Sans, Georgia, serif",
+      "body_font": "Inter, system-ui, sans-serif",
+      "mono_font": "JetBrains Mono, Source Code Pro, Courier New, monospace"
+    },
+    "hierarchy": {
+      "h1_hero": "text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight",
+      "h2_topic_title": "text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-3",
+      "h3_section_subtitle": "text-lg sm:text-xl font-semibold text-zinc-800 dark:text-zinc-200 tracking-normal",
+      "h4_card_header": "text-base font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider",
+      "body_text": "text-base text-zinc-700 dark:text-zinc-300 leading-relaxed",
+      "mono_formula": "font-mono text-sm sm:text-base font-semibold text-teal-900 dark:text-teal-200 bg-teal-50 dark:bg-teal-950/60 p-3 rounded border border-teal-200 dark:border-teal-800",
+      "small_meta": "text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-widest"
+    }
+  },
+  "colors": {
+    "theme_mode": "Light default with dark mode toggle + print-optimized high-contrast overrides",
+    "background": "#FBFBFA (Warm Academic Paper) in light mode; #09090B (Zinc-950) in dark mode; #FFFFFF in print",
+    "surface": "#FFFFFF in light mode; #18181B in dark mode",
+    "primary": "#0F172A (Deep Navy Charcoal)",
+    "primary_foreground": "#FFFFFF",
+    "accent_boxes": {
+      "definition_box": {
+        "border": "border-l-4 border-l-indigo-600 border-zinc-200 dark:border-zinc-800",
+        "bg": "bg-indigo-50/60 dark:bg-indigo-950/30",
+        "text": "text-indigo-950 dark:text-indigo-200",
+        "print_style": "border-l-4 border-l-black border-zinc-400 bg-zinc-100 text-black"
+      },
+      "memory_trick": {
+        "border": "border-l-4 border-l-amber-500 border-amber-200 dark:border-amber-800",
+        "bg": "bg-amber-50 dark:bg-amber-950/40",
+        "text": "text-amber-950 dark:text-amber-200",
+        "print_style": "border-l-4 border-l-black border-zinc-300 bg-zinc-50 text-black"
+      },
+      "formula_box": {
+        "border": "border-l-4 border-l-teal-600 border-teal-200 dark:border-teal-800",
+        "bg": "bg-teal-50/70 dark:bg-teal-950/40",
+        "text": "text-teal-950 dark:text-teal-200",
+        "print_style": "border-l-4 border-l-black border-dashed border-zinc-400 bg-zinc-100 text-black"
+      },
+      "exam_tip": {
+        "border": "border-l-4 border-l-rose-600 border-rose-200 dark:border-rose-800",
+        "bg": "bg-rose-50/70 dark:bg-rose-950/40",
+        "text": "text-rose-950 dark:text-rose-200",
+        "print_style": "border-l-4 border-l-black border-double border-zinc-500 bg-zinc-100 text-black"
+      }
+    }
+  },
+  "layout_and_navigation": {
+    "sidebar": {
+      "type": "Sticky topic navigation sidebar (Desktop left 280px, collapsible on mobile)",
+      "contents": [
+        "Header with Quick Search & Progress Tracker",
+        "10 Topic Nav Items (01. Intro to CG, 02. Display Devices, 03. CRT Tube, 04. Raster Scan, 05. Random Scan, 06. RGB Color Model, 07. CMY/CMYK Model, 08. HSV Model, 09. DDA Line Drawing, 10. Scan Conversion)",
+        "Special Modules (⚡ Last-Minute Cheat Sheet, 🧠 Must-Memorize Definitions, 🎨 SVG Diagram Gallery, 📝 8 Exam Answer Templates, 🔢 DDA Solved Example Calculator)"
+      ],
+      "print_behavior": "hidden in print view (`@media print { .sidebar { display: none !important; } }`)"
+    },
+    "main_content": {
+      "container": "max-w-4xl mx-auto px-4 py-6 md:px-8 space-y-12 print:px-0 print:py-0 print:max-w-none",
+      "topic_card_structure": "Every topic rendered in fixed 7-step academic flow"
+    }
+  },
+  "seven_step_pattern": [
+    {
+      "step": 1,
+      "name": "Child-level Analogy",
+      "icon": "Lightbulb",
+      "style": "bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40 p-4 rounded-lg text-sm text-amber-900 dark:text-amber-200 flex gap-3"
+    },
+    {
+      "step": 2,
+      "name": "Exam Definition",
+      "icon": "BookOpen",
+      "style": "definition-box border-l-4 border-l-indigo-600 bg-indigo-50/60 dark:bg-indigo-950/30 p-4 rounded-r-lg font-medium text-zinc-900 dark:text-zinc-100"
+    },
+    {
+      "step": 3,
+      "name": "Working Mechanism",
+      "icon": "Cpu",
+      "style": "space-y-2 bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm"
+    },
+    {
+      "step": 4,
+      "name": "Hand-coded SVG Diagram",
+      "icon": "Palette",
+      "style": "bg-zinc-50 dark:bg-zinc-950 p-6 rounded-xl border border-zinc-300 dark:border-zinc-800 text-center flex flex-col items-center justify-center print:bg-white print:border-black"
+    },
+    {
+      "step": 5,
+      "name": "Key Points & Comparison",
+      "icon": "CheckSquare",
+      "style": "grid grid-cols-1 md:grid-cols-2 gap-4"
+    },
+    {
+      "step": 6,
+      "name": "Memory Trick / Mnemonic",
+      "icon": "Zap",
+      "style": "memory-trick border-l-4 border-l-amber-500 bg-amber-50 dark:bg-amber-950/40 p-4 rounded-r-lg"
+    },
+    {
+      "step": 7,
+      "name": "5/10-Mark Answer Structure",
+      "icon": "FileText",
+      "style": "bg-zinc-900 dark:bg-zinc-950 text-zinc-100 p-5 rounded-xl border border-zinc-800 shadow-md print:bg-zinc-100 print:text-black print:border-black"
+    }
+  ],
+  "hand_coded_svg_diagrams": [
+    "CRT Cross-Section (Electron Gun, Focusing Anode, Deflection Plates, Phosphor Screen, Electron Beam)",
+    "Raster Scan Display (Horizontal Trace, Refresh Lines, Vertical Retrace)",
+    "Random Scan / Vector Display (Directed beam plotting a crisp triangle path)",
+    "RGB Color Cube / Additive Mixing Circles (Red, Green, Blue overlapping light to produce Cyan, Magenta, Yellow, White)",
+    "CMY / CMYK Subtractive Color Mixing (Cyan, Magenta, Yellow light subtractive overlays to Black)",
+    "HSV Color Wheel & Hexcone Model (Hue Angle, Saturation Radius, Value Height)",
+    "DDA Line Drawing Pixel Grid (Grid with calculated integer pixel steps vs continuous line)",
+    "Scan Conversion Flow Architecture (Geometric primitives -> Rasterization -> Pixel Buffer)"
+  ],
+  "print_pdf_optimization": {
+    "print_button": "Floating / Top Bar quick action trigger window.print()",
+    "css_rules": [
+      "@media print { @page { size: A4; margin: 15mm 15mm 15mm 15mm; } }",
+      "body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; background: white !important; color: black !important; }",
+      ".no-print, .sidebar, button, footer { display: none !important; }",
+      ".topic-card { page-break-after: always; break-after: page; page-break-inside: avoid; break-inside: avoid; }",
+      ".diagram-container { page-break-inside: avoid; break-inside: avoid; }",
+      "a { text-decoration: none; color: black; }"
+    ]
+  },
+  "interactive_features": [
+    "DDA Interactive Calculator & Step-by-Step Pixel Table",
+    "Topic Checklist / Mark as Mastered toggle stored in localStorage",
+    "Must-Draw Diagrams Zoom Modal",
+    "Search filter for instant keyword highlight (e.g. 'Phosphor', 'Slope', 'Retrace', 'Subtractive')",
+    "One-Click Export PDF / Print trigger"
+  ],
+  "required_data_testids": [
+    "nav-sidebar",
+    "topic-nav-item-{topicId}",
+    "print-pdf-button",
+    "search-input",
+    "theme-toggle",
+    "dda-calculator-input-x1",
+    "dda-calculator-input-y1",
+    "dda-calculator-input-x2",
+    "dda-calculator-input-y2",
+    "dda-calculate-btn",
+    "dda-pixel-table",
+    "diagram-gallery-btn",
+    "exam-templates-btn",
+    "last-minute-revision-btn",
+    "topic-card-{topicId}",
+    "mark-mastered-checkbox-{topicId}"
+  ],
+  "instructions_to_main_agent": "Ensure all 10 syllabus topics are fully authored with rich academic content, exact MGSU Bikaner M.Sc CS exam questions/answers, 100% hand-coded responsive SVGs, DDA step table, B&W print compatibility, and testids on all interactive elements."
+}

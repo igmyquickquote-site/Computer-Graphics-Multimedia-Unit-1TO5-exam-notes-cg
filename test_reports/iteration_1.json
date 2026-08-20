@@ -1,0 +1,27 @@
+{
+  "summary": "Full backend + frontend test of CG Unit 1 revision booklet. Backend: 21 pytest cases (GET /api/, /api/units, /api/units/cg-unit-1, 404 case, 10-topic structure, all 7-step fields, final_sections counts 10/15/8/8, DDA solved example table 7 rows + exact pixels) — all passed. Frontend (desktop 1920 + mobile 390): cover, sidebar (10 topics + 4 section buttons), all 10 topic cards with 7 steps + SVG diagram, DDA solved example with 7-row pixel table, 4 final sections (8 gallery SVGs, 8 templates, 15 definitions, 10 last-minute rows), scroll-spy active highlighting, print button calling window.print() exactly once (verified via stubbed print + stack trace), print-media emulation (sidebar/header hidden, clean B&W-friendly A4 layout), zero console errors. One mobile navigation defect found.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "Mobile menu navigation (390px)", "issue": "Clicking an item in the mobile menu over-scrolls: target card top lands at y = -410px (topic header/analogy off-screen above viewport, user lands mid-card at step 3). Root cause: navigate() calls setMenuOpen(false) and scrollIntoView() in the same tick, so the scroll offset is computed while the ~470px-tall open menu is still in the DOM; React then removes the menu and content shifts up by that height. Desktop sidebar navigation is correct (card top y = 96px). Suggested fix: close the menu first, then scroll on the next frame (requestAnimationFrame / setTimeout 0) or use a scroll-margin-aware manual window.scrollTo after re-layout.", "affected_selectors": ["[data-testid=\"mobile-menu\"] button", "[data-testid=\"topic-card-dda\"]"]}
+    ],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/backend/tests/backend_test.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": ["Fix mobile menu over-scroll in App.js navigate(): defer scrollIntoView until after the menu unmounts (rAF/setTimeout) so the topic header is visible after navigation."],
+  "critical_code_review_comments": [
+    "App.js navigate(): state update (menu close) and scrollIntoView in the same tick causes layout-shift over-scroll on mobile — sequence them.",
+    "index.js wires QueryClientProvider but App.js fetches with raw axios in useEffect; either use react-query or drop the provider (dead dependency).",
+    "No retry / user-visible retry button on fetch failure — only a static 'Please refresh' message (data-testid=load-error). Acceptable for MVP but consider a retry action.",
+    "Backend has no Pydantic response models; content is returned raw from Mongo. Fine for a read-only content API, but consider a response_model for contract safety."
+  ],
+  "updated_files": ["/app/backend/tests/backend_test.py"],
+  "success_rate": {"backend": "100%", "frontend": "95%"},
+  "seed_data_creation": "None — unit content is seeded by backend lifespan startup; tests are read-only.",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "test_credentials": "N/A — no auth",
+  "context_for_next_testing_agent": "Backend regression suite at /app/backend/tests/backend_test.py (21 tests, all pass; run: cd /app/backend && python -m pytest tests/backend_test.py -q). DDA solved_example schema is {title, given, steps[], table:{headers[5], rows[7]}, note} — not a flat list. Only open bug: mobile (390px) menu navigation over-scrolls by ~410px; desktop nav/scroll-spy is correct. Print button verified to call window.print() once; print-media emulation renders cleanly.",
+  "rca_of_the_issue": "Mobile over-scroll: setMenuOpen(false) + document.getElementById(id).scrollIntoView() run synchronously in navigate(); the browser computes the scroll target using pre-unmount layout (open menu adds ~410-470px above content), so after React removes the menu the page ends up scrolled ~410px too far."
+}

@@ -1,0 +1,103 @@
+.heading-font {
+  font-family: "Outfit", Georgia, serif;
+}
+
+::selection {
+  background: #18181b;
+  color: #fff;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+  border-radius: 4px;
+}
+
+.topic-card,
+.print-section,
+.cover-block {
+  animation: fadeUp 0.5s ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- PRINT / PDF (A4, COMPACT) ---------- */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 11mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 10.5px;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  /* Topics flow continuously to keep the PDF short */
+  .topic-card {
+    margin-top: 5mm;
+  }
+
+  .topic-card.space-y-3 > * + * {
+    margin-top: 2.2mm;
+  }
+
+  .topic-card header {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .print-section {
+    page-break-before: always;
+    break-before: page;
+    padding-top: 2mm;
+  }
+
+  .avoid-break,
+  .diagram-container,
+  figure,
+  table {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .cover-block {
+    page-break-after: avoid;
+  }
+
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  .diagram-container svg {
+    max-height: 52mm;
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  section,
+  article {
+    animation: none !important;
+  }
+}
