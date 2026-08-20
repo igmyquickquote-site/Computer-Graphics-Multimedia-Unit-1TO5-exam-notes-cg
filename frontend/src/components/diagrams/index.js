@@ -2,6 +2,7 @@ import { IntroFlowDiagram, DisplayTreeDiagram, CRTDiagram, RasterDiagram, Random
 import { RGBDiagram, CMYDiagram, HSVDiagram, DDAGridDiagram } from "./DiagramsB";
 import { CircleOctantsDiagram, ScanlineFillDiagram, Transforms2DDiagram, ReflectShearDiagram, WindowViewportDiagram, RegionCodesDiagram } from "./DiagramsC";
 import { Axes3DDiagram, ProjectionTreeDiagram, ParallelVsPerspectiveDiagram, ZBufferDiagram, BezierDiagram } from "./DiagramsD";
+import { MMComponentsDiagram, BitmapVectorDiagram, AudioSamplingDiagram, VideoFramesDiagram, KeyframeTweenDiagram, CompressionTreeDiagram } from "./DiagramsE";
 
 export const DIAGRAMS = {
   "intro-flow": IntroFlowDiagram,
@@ -25,4 +26,10 @@ export const DIAGRAMS = {
   "parallel-vs-perspective": ParallelVsPerspectiveDiagram,
   zbuffer: ZBufferDiagram,
   bezier: BezierDiagram,
+  "mm-components": MMComponentsDiagram,
+  "bitmap-vector": BitmapVectorDiagram,
+  "audio-sampling": AudioSamplingDiagram,
+  "video-frames": VideoFramesDiagram,
+  "keyframe-tween": KeyframeTweenDiagram,
+  "compression-tree": CompressionTreeDiagram,
 };

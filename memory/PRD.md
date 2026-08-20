@@ -19,8 +19,10 @@ Web app rendering "Computer Graphics — Unit 1: Quick & Easy Exam Revision Note
 - 2026-06 (Cheat Card + Unit 2): Pocket Cheat Card (formulas + memory hooks, 2-min read) added to each unit's final_sections, rendered right after cover with sidebar/mobile-menu links. Unit 2 added (`content_unit2.py`, 8 topics: Bresenham line w/ solved (2,3)→(8,6) table, Midpoint circle w/ r=5 solved table, Polygon fill, 2D transforms, Reflection & Shear, Homogeneous/composite, Window-Viewport, Clipping) with 6 new hand-coded SVGs (DiagramsC.jsx) and a Unit 1/Unit 2 switcher in the header. Tested (iteration_2: backend 14/14, frontend 100%).
 - 2026-06 (Unit 3): Unit 3 added (`content_unit3.py`, 8 topics: 3D concepts, 3D translate/scale w/ solved (2,3,4)→(6,10,14), 3D rotation w/ solved Rz90°(1,2,3)→(−2,1,3), Parallel projection, Perspective w/ solved P(6,8,10),d=5→(3,4) + Parallel-vs-Perspective table, Hidden surface removal (back-face/Z-buffer/painter), Bezier w/ solved B(0.5)=(4,3), B-spline + comparison table) with 5 new SVGs (DiagramsD.jsx: axes-3d, projection-tree, parallel-vs-perspective, zbuffer, bezier) and its own cheat card. Tested (iteration_3: backend 24/24, frontend 100%).
 
+- 2026-06 (Unit 4): Unit 4 Multimedia Basics added (`content_unit4.py`, 8 topics: Intro to multimedia, Components T-I-A-V-A, Text & images (bitmap vs vector), Digital audio & MIDI, Digital video, Animation, Compression, Applications & authoring tools) with 4 solved numericals (image 1.44 MB, audio 1.76 MB, video 230 MB, RLE 10→8), 3 comparison tables and 6 new SVGs (DiagramsE.jsx: mm-components, bitmap-vector, audio-sampling, video-frames, keyframe-tween, compression-tree) + own cheat card. Tested (iteration_4: backend 37/37, frontend 100%).
+
 ## Backlog / Remaining
-- P1: Units 4–5 content (same pattern: add content_unitN.py + seed).
+- P1: Unit 5 content (same pattern: add content_unit5.py + seed; update TestUnitsList count in backend_test.py).
 - P2: Restore full "long version" toggle (compact vs detailed view) — long content retrievable from git history.
 - P2: Search/keyword filter, mark-as-mastered checkboxes, question predictions section.
 

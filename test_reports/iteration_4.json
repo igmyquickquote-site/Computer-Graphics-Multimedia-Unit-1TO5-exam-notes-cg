@@ -1,0 +1,49 @@
+{
+  "summary": "Iteration 4 focused on the NEW Unit 4 (Multimedia Basics) feature. Backend: extended /app/backend/tests/backend_test.py with a TestUnit4 class (13 new tests) + updated TestUnitsList to expect 4 units + added a Unit-4 persistence test. Full suite = 37 tests, 37 passed (100%). Verified /api/units returns 4 units sorted by unit_number, /api/units/cg-unit-4 returns the exact 8 topic ids, solved_example present on exactly text-images (1.44 MB), digital-audio (1.76 MB), digital-video (230 MB) and compression (RLE 10->8, ratio 1.25), 3 comparison tables (Bitmap vs Vector, MIDI vs Digital Audio, Lossless vs Lossy) with 4 rows each and matching header widths, final_sections cheat_card (7 formulas / 7 hooks), last_minute_revision (8), must_memorize (10), correct diagram_key map, and no _id leakage. Frontend (desktop 1920x1080): switcher renders 4 tabs; unit-tab-cg-unit-4 loads 'CG Unit 4 - Rapid Revision' with '8 Topics . Compact' badge, 8 sidebar topics in exact order, and the Pocket Cheat Card positioned between the cover and the first topic. Exactly 6 diagram-frame elements render (mm-components, bitmap-vector, audio-sampling with a polyline sine wave + 13 sample dots, video-frames, keyframe-tween, compression-tree) at full 576px width with the correct captions; intro-multimedia and mm-applications correctly render no diagram. Solved numericals and Indian digit grouping (14,40,000 / 1,41,12,000 / 4A3B2C1D) all render. Sidebar nav scrolls (scrollY 5866) and scroll-spy correctly highlights digital-video. Unit 4 -> Unit 1 -> Unit 4 round trip is clean with zero stale cards from the other unit and zero console/pageerror events.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Unit 4 - Digital Video diagram (video-frames)",
+        "issues": ["'frame 1'..'frame 4' labels are very light grey at ~8-9px and sit directly behind the black ball dot - low contrast and slight overlap; consider darkening to zinc-500 and moving labels above the frame box for B&W print legibility"]
+      },
+      {
+        "screen": "Unit 4 - Components of Multimedia diagram (mm-components)",
+        "issues": ["Connector lines from Image/Audio/Video/Animation nodes are largely hidden behind the central MULTIMEDIA pill; only the Text connector is clearly visible. Cosmetic only - not blocking"]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Optional polish only: darken/reposition the 'frame N' labels in VideoFramesDiagram for print contrast",
+    "Optional polish only: draw mm-components connector lines before the central node so they are not occluded"
+  ],
+  "critical_code_review_comments": [
+    "server.py uses replace_one(..., upsert=True) per unit in lifespan - correctly idempotent, verified by repeat-fetch equality tests for cg-unit-2 and cg-unit-4",
+    "Both /api/units and /api/units/{unit_id} project {_id: 0}; no ObjectId leakage - verified",
+    "/api/units listing stays lightweight (no topics payload) and sorts by unit_number - verified for 4 units",
+    "content_unit4.py is data-only (321 lines) and content is split per unit, so no file exceeds the 700-line guidance",
+    "Endpoints are read-only with no user input beyond the path param, and unknown unit_id correctly returns 404 with detail 'Unit not found'"
+  ],
+  "updated_files": [
+    "/app/backend/tests/backend_test.py"
+  ],
+  "success_rate": {
+    "backend": "100%",
+    "frontend": "100%"
+  },
+  "seed_data_creation": "None created by tests - Unit 1-4 content is seeded by the backend lifespan hook; tests are read-only so no cleanup was required",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "test_credentials": "None required - app has no auth",
+  "context_for_next_testing_agent": "Backend regression suite /app/backend/tests/backend_test.py now covers Units 1-4 (37 tests, all passing) - extend it rather than rewriting. TestUnitsList expects exactly 4 units, so update that count if a Unit 5 is added. Frontend testids to reuse: unit-switcher, unit-tab-cg-unit-{n}, cover-section, nav-sidebar, topic-nav-item-{id}, topic-card-{id}, diagram-frame (figure wrapper - use this instead of counting raw svg elements, since lucide icons also render svgs inside topic cards), cheat-card-section, last-minute-section, definitions-section, print-pdf-button, mobile-menu-btn, mobile-menu. Mobile and print layouts were validated in iterations 1-3 and were not re-tested here.",
+  "rca_of_the_issue": "No functional defects found. The only initially-reported 'failures' were artifacts of my first Playwright script counting all svg elements inside a topic card (lucide icons inflated the count for intro-multimedia and mm-applications); re-running against the [data-testid='diagram-frame'] wrapper confirmed exactly 6 diagrams on Unit 4 as specified. Test-side selector fix only - no application code changed."
+}
