@@ -8,6 +8,7 @@ import os
 import logging
 
 from content_unit1 import UNIT_1
+from content_unit2 import UNIT_2
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -22,8 +23,9 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await db.units.replace_one({"unit_id": UNIT_1["unit_id"]}, UNIT_1, upsert=True)
-    logger.info("Unit 1 content seeded")
+    for u in (UNIT_1, UNIT_2):
+        await db.units.replace_one({"unit_id": u["unit_id"]}, u, upsert=True)
+    logger.info("Units seeded")
     yield
     client.close()
 
@@ -41,7 +43,7 @@ async def root():
 async def list_units():
     return await db.units.find(
         {}, {"_id": 0, "unit_id": 1, "unit_number": 1, "title": 1, "subtitle": 1, "subject": 1}
-    ).to_list(50)
+    ).sort("unit_number", 1).to_list(50)
 
 
 @api_router.get("/units/{unit_id}")

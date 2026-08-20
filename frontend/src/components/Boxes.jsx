@@ -26,7 +26,7 @@ export const WorkingList = ({ points }) => (
 );
 
 export const DiagramFrame = ({ caption, children }) => (
-  <figure className="avoid-break diagram-container bg-zinc-50 border border-zinc-300 rounded-md p-3 text-center">
+  <figure data-testid="diagram-frame" className="avoid-break diagram-container bg-zinc-50 border border-zinc-300 rounded-md p-3 text-center">
     <div className="max-w-xl mx-auto">{children}</div>
     <figcaption className="mt-1 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">{caption}</figcaption>
   </figure>

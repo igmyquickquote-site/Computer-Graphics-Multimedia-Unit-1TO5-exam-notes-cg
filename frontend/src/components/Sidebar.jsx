@@ -1,6 +1,7 @@
-import { Zap, Brain } from "lucide-react";
+import { Zap, Brain, CreditCard } from "lucide-react";
 
 const SPECIALS = [
+  { id: "cheat-card", label: "Pocket Cheat Card", icon: CreditCard, testid: "cheat-card-btn" },
   { id: "last-minute", label: "Last-Minute Revision", icon: Zap, testid: "last-minute-revision-btn" },
   { id: "definitions", label: "Must-Memorize Definitions", icon: Brain, testid: "definitions-btn" },
 ];

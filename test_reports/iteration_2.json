@@ -1,0 +1,25 @@
+{
+  "summary": "Iteration 2: Re-tested CG Revision Booklet after Pocket Cheat Card + Unit 2 addition. Replaced the stale old-schema backend suite with a new pytest suite (14 tests) covering /api/, /api/units listing/sorting, both unit documents, compact topic schema (quick_facts), cheat_card/last_minute_revision/must_memorize, Bresenham & Midpoint-circle solved-example tables, diagram_key mapping and 404 handling — 14/14 passed. Frontend verified on desktop (1920) and mobile (390) plus print-media emulation: cheat card renders immediately after cover with Formulas/Memory Hooks columns, sidebar cheat-card-btn scrolls correctly, unit switcher loads Unit 2 (title, 8 sidebar topics, scroll-to-top, 8-Topics badge), all Unit-2 topic cards render (homogeneous correctly has no diagram, clipping shows region-codes SVG), scroll-spy + nav land at section tops (y=96, no over-scroll), mobile menu includes Pocket Cheat Card, zero console/page errors, no horizontal overflow, header/sidebar hidden in print.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Unit 2 topic diagrams on mobile (390px)", "issues": ["Inner SVG label text (e.g. 'Same relative position...' note in the Window-to-Viewport diagram) scales down to ~3-4px and is illegible on mobile; consider larger base font in the SVG or hiding micro-annotations below sm breakpoint"]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/backend_test.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Bresenham topic reuses diagram_key 'dda-grid' (verified intentional — caption reads 'SAME LINE (2,3)->(8,6) — BRESENHAM PICKS THE SAME PIXELS, WITH INTEGERS ONLY'); keep in mind if the DDA diagram is ever edited it affects both units.",
+    "Spec said Unit 2 cheat_card should have formulas/hooks lists; actual counts are 7/7 (Unit 1 is 6/6) — no assertion violated, tests allow >=6."
+  ],
+  "updated_files": ["/app/backend/tests/backend_test.py", "/app/frontend/src/components/Boxes.jsx (added data-testid=\"diagram-frame\" to DiagramFrame for testability)"],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "seed_data_creation": "None — units are seeded idempotently by backend lifespan",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "test_credentials": "N/A — app has no auth",
+  "context_for_next_testing_agent": "Backend suite at /app/backend/tests/backend_test.py now matches the compact schema (quick_facts, final_sections = cheat_card/last_minute_revision/must_memorize) and both units; run with `cd /app/backend && python -m pytest tests/backend_test.py -v`. Frontend testids: unit-switcher, unit-tab-{unit_id}, cheat-card-section, cheat-card-btn, topic-nav-item-{id}, topic-card-{id}, diagram-frame, mobile-menu, mobile-menu-btn. Section tops land at y=96 (sticky header offset) which is expected, not over-scroll. Only open item is a minor mobile SVG-label legibility nit.",
+  "rca_of_the_issue": "No defects found. Previous mobile over-scroll bug (iteration 1) confirmed fixed — deferred scrollIntoView + scroll-mt-24 lands all sections at y=96 on both mobile and desktop."
+}

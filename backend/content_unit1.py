@@ -301,5 +301,24 @@ UNIT_1 = {
             {"term": "Scan Conversion", "definition": "Converting geometric shapes into pixels for a raster display."},
             {"term": "Aliasing", "definition": "Staircase (jagged) look of slanted lines due to square pixels."},
         ],
+        "cheat_card": {
+            "read_time": "2-minute read",
+            "formulas": [
+                "24-bit colours = 2^24 = 16.7 million",
+                "C = 1−R · M = 1−G · Y = 1−B",
+                "H: 0–360° · S: 0–1 · V: 0–1",
+                "DDA: Steps = max(|Δx|,|Δy|) · inc = Δ/Steps",
+                "(2,3)→(8,6): Steps 6 · x-inc 1 · y-inc 0.5",
+                "Refresh rate = 60–80 Hz",
+            ],
+            "hooks": [
+                "CRT beam: Gun → Grid → Focus → Deflect → Screen",
+                "Raster = Reading rows · Random = Ruler lines",
+                "RGB screen (ADD, all = White) · CMYK print (SUBTRACT, all = Black)",
+                "HSV = which colour · how pure · how bright (NEVER HSI)",
+                "DDA: divide once, add-add-add · 0.5 rounds UP",
+                "Pipeline P-A-F-S · Apps = C-GAMES",
+            ],
+        },
     },
 }

@@ -1,5 +1,6 @@
 import { IntroFlowDiagram, DisplayTreeDiagram, CRTDiagram, RasterDiagram, RandomDiagram, ScanFlowDiagram } from "./DiagramsA";
 import { RGBDiagram, CMYDiagram, HSVDiagram, DDAGridDiagram } from "./DiagramsB";
+import { CircleOctantsDiagram, ScanlineFillDiagram, Transforms2DDiagram, ReflectShearDiagram, WindowViewportDiagram, RegionCodesDiagram } from "./DiagramsC";
 
 export const DIAGRAMS = {
   "intro-flow": IntroFlowDiagram,
@@ -12,4 +13,10 @@ export const DIAGRAMS = {
   hsv: HSVDiagram,
   "dda-grid": DDAGridDiagram,
   "scan-flow": ScanFlowDiagram,
+  "circle-octants": CircleOctantsDiagram,
+  "scanline-fill": ScanlineFillDiagram,
+  "transforms-2d": Transforms2DDiagram,
+  "reflect-shear": ReflectShearDiagram,
+  "window-viewport": WindowViewportDiagram,
+  "region-codes": RegionCodesDiagram,
 };

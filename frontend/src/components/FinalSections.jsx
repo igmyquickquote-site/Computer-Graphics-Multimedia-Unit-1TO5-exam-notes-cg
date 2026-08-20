@@ -27,6 +27,35 @@ export const LastMinuteRevision = ({ items }) => (
   </section>
 );
 
+export const CheatCard = ({ data }) => (
+  <section id="cheat-card" data-testid="cheat-card-section" className="scroll-mt-24 avoid-break">
+    <div className="border-2 border-zinc-900 rounded-md overflow-hidden">
+      <div className="bg-zinc-900 text-white px-3 py-1.5 flex items-center justify-between print:bg-zinc-200 print:text-black">
+        <p className="font-mono text-[13px] font-bold">🃏 POCKET CHEAT CARD</p>
+        <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-300 print:text-zinc-600">{data.read_time}</span>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 print:grid-cols-2 bg-white">
+        <div className="p-3 border-b md:border-b-0 md:border-r print:border-b-0 print:border-r border-zinc-200">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-teal-700 mb-1.5">Formulas</p>
+          <ul className="space-y-1">
+            {data.formulas.map((f, i) => (
+              <li key={i} className="font-mono text-[12px] font-semibold text-zinc-900 leading-snug">{f}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="p-3">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-amber-700 mb-1.5">Memory Hooks</p>
+          <ul className="space-y-1">
+            {data.hooks.map((h, i) => (
+              <li key={i} className="text-[12px] font-medium text-zinc-800 leading-snug">{h}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
 export const MustMemorize = ({ items }) => (
   <section id="definitions" data-testid="definitions-section" className="scroll-mt-24">
     <SectionHeader icon={Brain} title="Must-Memorize Definitions" sub="Write these exact lines in the exam" />
